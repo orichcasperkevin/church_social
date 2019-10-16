@@ -11,8 +11,10 @@ import VueChatScroll from 'vue-chat-scroll'
 Vue.use(VueChatScroll)
 
 Vue.prototype.$http = axios
+Vue.prototype.$BASE_URL = "http://127.0.0.1:8000"
 
 Vue.config.productionTip = false
+
 
 new Vue({
   router,

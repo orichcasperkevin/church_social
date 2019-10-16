@@ -19,7 +19,7 @@
     </nav> 
     <!-- Channels -->
     <div  style="background-color: ghostwhite">      
-      <h3  class="container strong text-primary " >
+      <h3 class="container strong text-primary " >
         Channels    
       </h3>
     </div>    

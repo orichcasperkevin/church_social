@@ -2,20 +2,15 @@
     <div class="Channel-chats">
         <!-- Channel chat-->
         <div  style="background-color: ghostwhite">      
-            <h5  class="container " >
-            chat
-            </h5>   
+            <P></P>  
         </div>      
-        <ul class="content text-muted text-sm container" v-chat-scroll="{always: false, smooth: true}" style="height: 270px;overflow-y: scroll;">
+        <ul v-for="item in messages" class="content text-muted text-sm container" v-chat-scroll="{always: false, smooth: true}" style="height: 375px;overflow-y: scroll;">
             <li class="chat-bubble container">
-                <div class="row">
-                        <div class="in-chat-avatar col-2" style="padding: 5px; border-radius: 50px; max-height: 30px">
-                            <h3>T</h3>
-                        </div>
-                        <div class="in-chat-text col-9" style="padding:10px; border-radius: 5px ;background-color:ghostwhite; min-height: 75px">
+                <div class="row">                      
+                        <div class="in-chat-text col-10" style="padding:10px; border-radius: 5px ;background-color:ghostwhite; min-height: 75px">
                             <div>
-                                <p>Nickson meli</p>
-                                <small >Donec id elit non mi porta gravida at ed diam eget risus varius blandit</small>
+                                <p>{{item.sender.member.username}}</p>
+                                <small >{{item.message}}</small>
                             </div>
                             <footer class="blockquote-footer text-success"><small>sun <cite title="Source Title">12:30</cite></small></footer>
                         </div>                                 
@@ -33,49 +28,15 @@
                     
                     </div>                
             </li>  
-            <li class="chat-bubble container " style="padding: 10px">
-                    <div class="row justify-content-end">                        
-                        <div class="out-chat-text col-9" style="padding:10px; border-radius: 5px ;background-color: mintcream; min-height: 75px">
-                            <div>
-                                <p>Casper orich</p>
-                                <small class="padding:2px"> varius blandit here</small>
-                            </div>
-                            <footer class="blockquote-footer text-success"><small>sun <cite title="Source Title">12:30</cite></small></footer>
-                        </div>
-                    
-                    </div>                
+            <li>
+                <div class="input-group input-group-sm mb-3">                    
+                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                    <div class="input-group-append">
+                        <span class="input-group-text" v-on:click="sendMessage()" v-model="message">Send</span>
+                    </div>
+                </div>
             </li>
-            <li class="chat-bubble container " style="padding: 10px">
-                    <div class="row justify-content-end">                        
-                        <div class="out-chat-text col-9" style="padding:10px; border-radius: 5px ;background-color: mintcream; min-height: 75px">
-                            <div>
-                                <p>Casper orich</p>
-                                <small class="padding:2px"> varius blandit here</small>
-                            </div>
-                            <footer class="blockquote-footer text-success"><small>sun <cite title="Source Title">12:30</cite></small></footer>
-                        </div>
-                    
-                    </div>                
-            </li>
-            <li class="chat-bubble container " style="padding: 10px">
-                    <div class="row justify-content-end">                        
-                        <div class="out-chat-text col-9" style="padding:10px; border-radius: 5px ;background-color: mintcream; min-height: 75px">
-                            <div>
-                                <p>Casper orich</p>
-                                <small class="padding:2px"> varius blandit here</small>
-                            </div>
-                            <footer class="blockquote-footer text-success"><small>sun <cite title="Source Title">12:30</cite></small></footer>
-                        </div>
-                    
-                    </div>                
-            </li>         
-        </ul>    
-        <div class="input-group ">                   
-        <textarea class="form-control" aria-label="With textarea" style="border-radius: 50px 0px 0px 50px"></textarea>
-        <div class="input-group-append"  >
-            <span class="input-group-text" style="border-radius: 0px 50px 50px 0px">send</span>
-        </div>
-        </div>                    
+        </ul>                       
     </div>
 
 
@@ -83,10 +44,59 @@
 
 <script>
 export default {
-name: 'ChannelChats',
-props: {
-msg: String
-}
+    name: 'ChannelChats',
+    props: {
+        msg: String
+    },
+    created(){
+        this.fetchData()
+    },
+    data(){
+        return{
+            messages: [],
+            chatSocket: null,
+            message: ''
+        }
+    },
+    methods:{
+        fetchData: function(){
+            var channel = this.$route.params.id
+            var storage_name = channel + "-messages"
+
+            this.$http.get(this.$BASE_URL + '/api/social/' + channel + '/messages/')
+            .then(response => {
+                this.messages = response.data
+                this.watchForMoreMessages()
+            })
+            .catch(() => {
+                
+            })
+        },
+        sendMessage: function(){
+            console.log("sending message")
+            console.log(this.message)
+            // use username of registered user
+            this.chatSocket.send(JSON.stringify({
+                'username': 'casper',
+                'message': this.message
+            }));
+        },
+        watchForMoreMessages: function (){
+            //TODO have a function that converts $BASE_URL to this form
+            var BASE_URL = "127.0.0.1:8000"   
+            var channel = this.$route.params.id         
+            this.chatSocket = new WebSocket('ws://' + BASE_URL +'/ws/chat/' + channel + '/');
+
+            this.chatSocket.onmessage = function(event) {
+                // this.messages.push(event.data)
+                console.log("recieved" + event.data)
+             }
+             this.chatSocket.onclose = function(event) {
+                console.error('Chat socket closed unexpectedly'+ event);
+             }
+
+        }
+    }
 }
 </script>
 

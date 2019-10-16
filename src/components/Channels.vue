@@ -1,45 +1,18 @@
 <template>
   <div class="channels">
-    <div class="list-group">
-      <router-link :to=" `/channel-detail/`+ 1"> 
-      <a href="#" class="list-group-item list-group-item-action flex-column align-items-start border-0">
-        <div class="d-flex w-100 justify-content-between">
-          <h5 class="mb-1"><b>#Channel 1</b></h5>
-          <div><span class="badge badge-secondary badge-pill">14</span></div>
-        </div>
-        <p class="mb-1 text-secondary"><b>Donec  blandit.</b></p>
-        <small class="text-primary">3 days ago</small>
-      </a>
-      </router-link>
-      <a href="#" class="list-group-item list-group-item-action flex-column align-items-start border-0">
-        <div class="d-flex w-100 justify-content-between">
-          <h5 class="mb-1"><b>#Some channel</b></h5>
-          <div><span class="badge badge-secondary badge-pill">14</span></div>
-        </div>
-        <p class="mb-1 text-secondary"><b>Donec id elit non mi pd diam eget risus varius blandit.</b></p>
-        <small class="text-primary">today 6:30</small>
-      </a>
-      <a href="#" class="list-group-item list-group-item-action flex-column align-items-start border-0">
-        <div class="d-flex w-100 justify-content-between">
-          <h5 class="mb-1">#List channel</h5>    
-        </div>
-        <p class="mb-1 text-secondary">Donec id elit non mi porta gravida at ed diam eget risus varius blandit.</p>
-        <small class="text-primary">just now</small>
-      </a>
-      <a href="#" class="list-group-item list-group-item-action flex-column align-items-start border-0">
-        <div class="d-flex w-100 justify-content-between">
-          <h5 class="mb-1">#List group item heading</h5>          
-        </div>
-        <p class="mb-1 text-secondary">Donec id elit non mi pd diam eget risus varius blandit.</p>
-        <small class="text-primary">today 6:30</small>
-      </a>
-      <a href="#" class="list-group-item list-group-item-action flex-column align-items-start border-0">
-        <div class="d-flex w-100 justify-content-between">
-          <h5 class="mb-1 ">#Group item heading</h5>         
-        </div>
-        <p class="mb-1 text-secondary">Donec id elit non mi porta gravida at ed diam eget risus varius blandit.</p>
-        <small class="text-primary">just now</small>
-      </a>
+    <div class="channel-list-item" v-for="item in channels" >
+      <router-link :to=" `/channel-detail/`+ item.channel.name " class="container-fluid"> 
+      <div class="row">          
+          <a href="#" class="col-10 list-group-item list-group-item-action flex-column align-items-start border-0">        
+              <div class="d-flex w-100 justify-content-between">          
+                <h5 class="mb-1"><b>{{item.channel.name}}</b></h5>
+                <div><span class="badge badge-secondary badge-pill">14</span></div>
+              </div>
+              <p class="mb-1 text-secondary"><b>Donec  blandit.</b></p>
+              <small class="text-primary">3 days ago</small>
+          </a>
+      </div>
+      </router-link>   
     </div>
   </div>
 </template>
@@ -49,6 +22,26 @@ export default {
   name: 'Channels',
   props: {
     msg: String
+  },
+  created(){
+    this.fetchData()
+  },
+  data(){
+    return{
+      channels: []
+    }
+  },
+  methods:{
+    fetchData: function(){      
+      var username = "casper"
+      this.$http.get(this.$BASE_URL + '/api/social/' + username + '/channels/')
+      .then(response => {
+        this.channels = response.data
+      })
+      .catch(() => {
+        
+      })
+    }
   }
 }
 </script>

@@ -19,12 +19,9 @@
         </nav>
         <!-- Channel details -->
         <div style="background-color: ghostwhite">      
-            <h3  class="container strong text-primary " >
+            <h4  class="container strong text-primary " >
                 #Channel name
-            </h3>
-            <div class="description text-muted text-sm container">
-                description
-            </div>   
+            </h4>            
         </div> 
         <div class="container">
             <div class="container btn-group tab" role="group" aria-label="Basic example">
@@ -36,7 +33,7 @@
             <ChannelPublics />
         </div>
         <div id="chats" class="tab-content">
-            <ChannelChats style="position: absolute; left:0 ; right:0; z-index:-1; "/>
+            <ChannelChats/>
         </div>    
     </div>    
 </template>
