@@ -2,7 +2,7 @@
   <div id="app">   
     <router-view/>
 
-    <nav class="fixed-bottom navbar navbar-light bg-light">        
+    <nav hidden class="fixed-bottom navbar navbar-light bg-light">        
         <div class="navbar-nav navbar-expand">  
             <router-link :to="{name: 'me'}" style="padding: 12px" class="nav-item nav-link text-primary">me</router-link>          
             <router-link :to="{name: 'home'}" style="padding: 12px" class="nav-item nav-link text-primary">channels</router-link> 

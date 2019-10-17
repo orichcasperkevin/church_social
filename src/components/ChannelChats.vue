@@ -3,41 +3,36 @@
         <!-- Channel chat-->
         <div  style="background-color: ghostwhite">      
             <P></P>  
-        </div>      
-        <ul  class="content text-muted text-sm container" v-chat-scroll="{always: false, smooth: true}" style="height: 375px;overflow-y: scroll;">
-            <li class="chat-bubble container" v-for="item in messages">
-                <div class="row">                      
-                        <div class="in-chat-text col-10" style="padding:10px; border-radius: 5px ;background-color:ghostwhite; min-height: 75px">
-                            <div>
-                                <p>{{item.sender.member.username}}</p>
-                                <small >{{item.message}}</small>
-                            </div>
-                            <footer class="blockquote-footer text-success"><small>sun <cite title="Source Title">12:30</cite></small></footer>
-                        </div>                                 
-                </div>                
-            </li>
-            <li class="chat-bubble container " style="padding: 10px">
-                    <div class="row justify-content-end">                        
-                        <div class="out-chat-text col-9" style="padding:10px; border-radius: 5px ;background-color: mintcream; min-height: 75px">
-                            <div>
-                                <p>Casper orich</p>
-                                <small class="padding:2px"> varius blandit here</small>
-                            </div>
-                            <footer class="blockquote-footer text-success"><small>sun <cite title="Source Title">12:30</cite></small></footer>
-                        </div>
-                    
-                    </div>                
-            </li>  
-            <li>
-                <div class="input-group input-group-sm mb-3">                    
-                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" v-model="message">
-                    <div class="input-group-append">
-                        <span class="input-group-text" v-on:click="sendMessage()">Send</span>
+        </div>
+        <div  class="chat">
+        <div class="messages">
+            <div class="messages-content"  v-chat-scroll="{always: false, smooth: true}" >            
+                    <div class="message loading new">
+                        <figure class="avatar">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" />
+                        </figure>
+                        <span></span>
                     </div>
-                </div>
-            </li>
-        </ul>                       
-    </div>
+                    <div class="message new" v-for="item in messages">
+                        <figure class="avatar">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" />
+                        </figure>
+                        <small class="text-success">{{item.sender.member.username}}</small>                
+                        <p>{{item.message}}</p>
+                    </div>
+                    <div class="message message-personal">
+                        <small class="text-success">Me</small>                
+                        <p>Yoh mehn</p>
+                    </div>
+            </div>    
+        </div>
+        <div class="message-box">
+            <textarea type="text" class="message-input" placeholder="Type message..." v-model="message"></textarea>
+            <button type="submit" class="message-submit" v-on:click="sendMessage()">Send</button>
+        </div>
+
+        </div>                
+</div>
 
 
 </template>
@@ -99,5 +94,5 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style scoped lang="scss" src="@/assets/styles/chatStyles.scss">
 </style>
