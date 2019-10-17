@@ -4,8 +4,8 @@
         <div  style="background-color: ghostwhite">      
             <P></P>  
         </div>      
-        <ul v-for="item in messages" class="content text-muted text-sm container" v-chat-scroll="{always: false, smooth: true}" style="height: 375px;overflow-y: scroll;">
-            <li class="chat-bubble container">
+        <ul  class="content text-muted text-sm container" v-chat-scroll="{always: false, smooth: true}" style="height: 375px;overflow-y: scroll;">
+            <li class="chat-bubble container" v-for="item in messages">
                 <div class="row">                      
                         <div class="in-chat-text col-10" style="padding:10px; border-radius: 5px ;background-color:ghostwhite; min-height: 75px">
                             <div>
@@ -30,9 +30,9 @@
             </li>  
             <li>
                 <div class="input-group input-group-sm mb-3">                    
-                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" v-model="message">
                     <div class="input-group-append">
-                        <span class="input-group-text" v-on:click="sendMessage()" v-model="message">Send</span>
+                        <span class="input-group-text" v-on:click="sendMessage()">Send</span>
                     </div>
                 </div>
             </li>
@@ -61,8 +61,6 @@ export default {
     methods:{
         fetchData: function(){
             var channel = this.$route.params.id
-            var storage_name = channel + "-messages"
-
             this.$http.get(this.$BASE_URL + '/api/social/' + channel + '/messages/')
             .then(response => {
                 this.messages = response.data
@@ -73,23 +71,23 @@ export default {
             })
         },
         sendMessage: function(){
-            console.log("sending message")
-            console.log(this.message)
             // use username of registered user
             this.chatSocket.send(JSON.stringify({
                 'username': 'casper',
-                'message': this.message
+                'message': this.message,
+                'type': 'M'
             }));
         },
         watchForMoreMessages: function (){
             //TODO have a function that converts $BASE_URL to this form
+            var vm = this
             var BASE_URL = "127.0.0.1:8000"   
             var channel = this.$route.params.id         
             this.chatSocket = new WebSocket('ws://' + BASE_URL +'/ws/chat/' + channel + '/');
 
-            this.chatSocket.onmessage = function(event) {
-                // this.messages.push(event.data)
-                console.log("recieved" + event.data)
+            this.chatSocket.onmessage = function(event) {                                                            
+                var data = JSON.parse(event.data)                
+                vm.messages.push(data[0])
              }
              this.chatSocket.onclose = function(event) {
                 console.error('Chat socket closed unexpectedly'+ event);
