@@ -1,13 +1,6 @@
 <template>
   <div class="home">    
-    <nav class="navbar navbar-expand  navbar-light bg-light">
-        <div class="fixed-top" >
-          <a class="navbar-brand" href="#">
-            <div style=" background-color:ghostwhite ; padding: 7.5px ; border-radius: 50px">
-              back
-            </div>
-          </a>
-        </div>          
+    <nav class="navbar navbar-expand  navbar-light bg-light">                  
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ml-auto">
             <a class="nav-item nav-link" href="#">delete</a>
@@ -19,15 +12,15 @@
     </nav> 
     <!-- Channels -->
     <div  style="background-color: ghostwhite">      
-      <h3 class="container strong text-primary " >
-        Channels    
+      <h3 class="container strong" >
+        <strong>Channels</strong>
       </h3>
     </div>    
     <Channels msg="Channels component here" class="container"/>
     <!-- chat component -->
     <div style="background-color: ghostwhite">      
-      <h3 class="container strong separator text-primary">
-        Chats
+      <h3 class="container ">
+        <strong>Chats</strong>
       </h3>    
     </div> 
     <Chats msg="Chats here" class="container"/>

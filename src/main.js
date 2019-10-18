@@ -7,11 +7,14 @@ import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import axios from 'axios'
 import VueChatScroll from 'vue-chat-scroll'
+import VueSession from 'vue-session'
 
+Vue.use(VueSession)
 Vue.use(VueChatScroll)
 
 Vue.prototype.$http = axios
 Vue.prototype.$BASE_URL = "http://127.0.0.1:8000"
+Vue.prototype.$goBack = function(){window.history.back()}
 
 Vue.config.productionTip = false
 

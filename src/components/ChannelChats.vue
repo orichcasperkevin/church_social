@@ -1,7 +1,7 @@
 <template>
     <div class="Channel-chats">
-        <!-- Channel chat-->
-        <div  style="background-color: ghostwhite">      
+        <!-- Channel chat-->        
+        <div>      
             <P></P>  
         </div>
         <div  class="chat">
@@ -9,20 +9,24 @@
             <div class="messages-content"  v-chat-scroll="{always: false, smooth: true}" >            
                     <div class="message loading new">
                         <figure class="avatar">
-                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" />
+                            <img src="" />
                         </figure>
                         <span></span>
                     </div>
-                    <div class="message new" v-for="item in messages">
-                        <figure class="avatar">
-                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" />
-                        </figure>
-                        <small class="text-success">{{item.sender.member.username}}</small>                
-                        <p>{{item.message}}</p>
+                    <div class="container" v-for="item in messages">                    
+                    <div class="message message-personal text-left" v-if="item.sender.member.username == username" >
+                            <small class="text-success">Me</small>                
+                            <p>{{item.message}}</p>                            
+                            <div class="timestamp"> 12:30</div>                            
                     </div>
-                    <div class="message message-personal">
-                        <small class="text-success">Me</small>                
-                        <p>Yoh mehn</p>
+                    <div class="message new" v-else>
+                        <figure class="avatar">
+                            <img src="" />
+                        </figure>
+                        <small class="text-success" >{{item.sender.member.username}}</small>                
+                        <p>{{item.message}}</p>
+                        <div class="timestamp"> 12:30</div>
+                    </div>
                     </div>
             </div>    
         </div>
@@ -50,7 +54,8 @@ export default {
         return{
             messages: [],
             chatSocket: null,
-            message: ''
+            message: '',
+            username: this.$session.get('username')
         }
     },
     methods:{
@@ -68,7 +73,7 @@ export default {
         sendMessage: function(){
             // use username of registered user
             this.chatSocket.send(JSON.stringify({
-                'username': 'casper',
+                'username': this.$session.get('username'),
                 'message': this.message,
                 'type': 'M'
             }));

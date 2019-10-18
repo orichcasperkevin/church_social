@@ -3,9 +3,10 @@
         <nav class="navbar navbar-expand  navbar-light bg-light">
             <div class="fixed-top" >
                 <a class="navbar-brand" href="#">
-                <div style=" background-color:ghostwhite ; padding: 7.5px ; border-radius: 50px">
-                    back
-                </div>
+                <a class= "back-button" v-on:click="$goBack()">
+                    <img src="@/assets/icons/left-arrow.svg" >
+                    
+                </a>
                 </a>
             </div>          
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
@@ -19,16 +20,18 @@
         </nav>
         <!-- Channel details -->
         <div style="background-color: ghostwhite">      
-            <h4  class="container strong text-primary " >
-                #Channel name
+            <h4  class="container">
+            <strong>
+                {{channel_name}}
+            </strong>            
             </h4>            
         </div> 
         <div class="container">
             <div class="container btn-group tab" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-sm btn-outline-primary tab-link" v-on:click="openTab('public')">public</button>            
+                <button type="button" class="btn btn-sm btn-outline-primary tab-link" v-on:click="openTab('public')">notifications</button>            
                 <button type="button" class="btn btn-sm btn-outline-primary tab-link" v-on:click="openTab('chats')">chats</button>
             </div>
-        </div> 
+        </div>  
         <div id="public" class="tab-content">
             <ChannelPublics />
         </div>
@@ -46,13 +49,14 @@
             ChannelChats,
             ChannelPublics
         },
-        data(){
-            return{
-
-            }
+        computed:{
+           // replace underscores with spaces and concatenate a #
+           channel_name: function() {            
+               return '#' + this.$route.params.id.split('_').join(' ')
+           }
         },
         methods:{
-            openTab :function(tabName) {
+            openTab :function(tabName) {          
                 // Declare all variables
                 var i, tabcontent, tablinks;
             
@@ -68,4 +72,5 @@
   
 }
 </script>
+<style lang="scss" src="@/assets/styles/general.scss"></style>
       
