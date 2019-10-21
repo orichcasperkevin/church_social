@@ -13,19 +13,22 @@
                         </figure>
                         <span></span>
                     </div>
-                    <div class="container" v-for="item in messages">                    
-                    <div class="message message-personal text-left" v-if="item.sender.member.username == username" >
-                            <small class="text-success">Me</small>                
-                            <p>{{item.message}}</p>                            
-                            <div class="timestamp"> 12:30</div>                            
+                    <div  class="container" v-for="item in messages">                    
+                    <div class="message message-personal text-left" v-if="item.sender.member.username == username" >                                           
+                            <p>
+                            {{item.message}}                           
+                            <div class="timestamp text-right" > {{item.time_stamp}}</div>  
+                            </p>                                                                                  
                     </div>
                     <div class="message new" v-else>
                         <figure class="avatar">
                             <img src="" />
                         </figure>
                         <small class="text-success" >{{item.sender.member.username}}</small>                
-                        <p>{{item.message}}</p>
-                        <div class="timestamp"> 12:30</div>
+                        <p>
+                            {{item.message}}
+                            <div class="timestamp text-right" > 12:30</div>  
+                        </p> 
                     </div>
                     </div>
             </div>    
@@ -63,8 +66,8 @@ export default {
             var channel = this.$route.params.id
             this.$http.get(this.$BASE_URL + '/api/social/' + channel + '/messages/')
             .then(response => {
-                this.messages = response.data
-                this.watchForMoreMessages()
+                this.messages = response.data        
+                this.watchForMoreMessages()                
             })
             .catch(() => {
                 
@@ -74,8 +77,7 @@ export default {
             // use username of registered user
             this.chatSocket.send(JSON.stringify({
                 'username': this.$session.get('username'),
-                'message': this.message,
-                'type': 'M'
+                'message': this.message,                
             }));
         },
         watchForMoreMessages: function (){
@@ -93,7 +95,7 @@ export default {
                 console.error('Chat socket closed unexpectedly'+ event);
              }
 
-        }
+        },
     }
 }
 </script>

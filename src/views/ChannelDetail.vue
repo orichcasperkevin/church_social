@@ -19,19 +19,29 @@
             </div>
         </nav>
         <!-- Channel details -->
-        <div style="background-color: ghostwhite">      
-            <h4  class="container">
-            <strong>
-                {{channel_name}}
-            </strong>            
-            </h4>            
-        </div> 
-        <div class="container">
+        <div class="container mb-2 mt-2">
             <div class="container btn-group tab" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-sm btn-outline-primary tab-link" v-on:click="openTab('public')">notifications</button>            
-                <button type="button" class="btn btn-sm btn-outline-primary tab-link" v-on:click="openTab('chats')">chats</button>
+                <button type="button" 
+                        class="btn btn-sm btn-outline-primary tab-link" 
+                        v-on:click="openTab('public')">
+                        notice
+                        <span class="badge badge-primary">4</span>
+                </button>            
+                <button type="button" 
+                        class="btn btn-sm btn-outline-primary tab-link" 
+                        v-on:click="openTab('chats')">
+                        chats
+                        <span class="badge badge-primary">4</span>
+                </button>
             </div>
         </div>  
+        <div style="background-color: ghostwhite">      
+            <h3  class="container text-primary">
+            <strong >
+                {{channel_name}}
+            </strong>            
+            </h3>            
+        </div> 
         <div id="public" class="tab-content">
             <ChannelPublics />
         </div>
