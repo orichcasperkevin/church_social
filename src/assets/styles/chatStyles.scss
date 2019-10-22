@@ -88,8 +88,8 @@ Messages
     .avatar {
       position: absolute;
       z-index: 1;
-      bottom: -15px;
-      left: -35px;
+      top: 5px;
+      left: -15px;
       border-radius: 30px;
       width: 30px;
       height: 30px;
@@ -107,9 +107,9 @@ Messages
     &.message-personal {
       float: right;     
       margin-left:20px; 
-      text-shadow: 0 1px 1px black;
+      text-shadow: 0 1px 1px white;
       text-align: right;
-      background: lighten($color:lightskyblue, $amount: 5);
+      background: #6c757d;
       border-radius: 10px 10px 0;
       
     }

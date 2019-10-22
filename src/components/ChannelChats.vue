@@ -1,9 +1,19 @@
 <template>
     <div class="Channel-chats">
         <!-- Channel chat-->        
-        <div>      
-            <P></P>  
-        </div>
+
+        <div class="container mt-1.5 mb-1.5 text-right">
+                <div class="btn">                    
+                    <vue-letter-avatar name="gyiyh" size='25' :rounded=true class="avatar"/>
+                    <vue-letter-avatar name="ugyiyh" size='25' :rounded=true class="avatar"/>  
+                    <vue-letter-avatar name="kyiyh" size='25' :rounded=true class="avatar"/>
+                    <vue-letter-avatar name="lyiyh" size='25' :rounded=true class="avatar"/> 
+                    <vue-letter-avatar name="gyiyh" size='25' :rounded=true class="avatar"/>                                       
+                </div>  
+                <span class="text-secondary">+30 </span>             
+                <button type="button" class="btn btn-link text-success">view all</button>
+                <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModal">+ add</button>
+        </div>  
         <div  class="chat">
         <div class="messages">
             <div class="messages-content"  v-chat-scroll="{always: false, smooth: true}" >            
@@ -17,17 +27,16 @@
                     <div class="message message-personal text-left" v-if="item.sender.member.username == username" >                                           
                             <p>
                             {{item.message}}                           
-                            <div class="timestamp text-right" > {{item.time_stamp}}</div>  
+                            <div class="timestamp text-right" > {{humanizeDate(item.time_stamp)}}</div>  
                             </p>                                                                                  
                     </div>
                     <div class="message new" v-else>
-                        <figure class="avatar">
-                            <img src="" />
-                        </figure>
-                        <small class="text-success" >{{item.sender.member.username}}</small>                
+
+                        <vue-letter-avatar :name="item.sender.member.username" size='25' :rounded=true class="avatar"/>                        
+                        <small class="text-success" >{{item.sender.member.username}} </small>                
                         <p>
                             {{item.message}}
-                            <div class="timestamp text-right" > 12:30</div>  
+                            <div class="timestamp text-right" > {{humanizeDate(item.time_stamp)}}</div>  
                         </p> 
                     </div>
                     </div>
@@ -62,6 +71,9 @@ export default {
         }
     },
     methods:{
+        humanizeDate:function(date_time){
+            return this.$timeAgo.format(new Date(date_time), 'twitter')
+        },
         fetchData: function(){
             var channel = this.$route.params.id
             this.$http.get(this.$BASE_URL + '/api/social/' + channel + '/messages/')

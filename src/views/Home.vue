@@ -13,14 +13,14 @@
     <!-- Channels -->
     <div  style="background-color: ghostwhite">      
       <h3 class="container strong" >
-        <strong>Channels</strong>
+        <strong class="text-primary">Channels</strong>
       </h3>
     </div>    
     <Channels msg="Channels component here" class="container"/>
     <!-- chat component -->
     <div style="background-color: ghostwhite">      
       <h3 class="container ">
-        <strong>Chats</strong>
+        <strong class="text-primary">Chats</strong>
       </h3>    
     </div> 
     <Chats msg="Chats here" class="container"/>

@@ -11,9 +11,9 @@
             </div>          
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav ml-auto">
-                <a class="nav-item nav-link" href="#">delete</a>
-                <a class="nav-item nav-link" href="#">archive</a>
-                <a class="nav-item nav-link" href="#">pin</a>
+                <a class="nav-item nav-link" href="#"></a>
+                <a class="nav-item nav-link" href="#"></a>
+                <a class="nav-item nav-link" href="#"></a>
     
                 </div>
             </div>
@@ -53,11 +53,14 @@
 <script>
     // @ is an alias to /src
     import ChannelChats from '@/components/ChannelChats.vue'
-    import ChannelPublics from '@/components/ChannelPublics.vue'
+    import ChannelPublics from '@/components/ChannelPublics.vue'    
     export default {
         components: {
             ChannelChats,
             ChannelPublics
+        },
+        mounted(){
+            this.openTab('chats')
         },
         computed:{
            // replace underscores with spaces and concatenate a #

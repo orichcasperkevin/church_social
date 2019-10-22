@@ -1,7 +1,7 @@
 <template>
     <div class="Channel-publics">
         <!-- Channel announcements-->          
-        <div class="container mt-3 mb-3 text-right">
+        <div class="container mt-1.5 mb-1.5 text-right" >
             <button type="button" class="btn btn-link text-success">mark all as read</button>
             <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#exampleModal">+ add</button>
         </div>  
@@ -17,12 +17,12 @@
                                     aria-expanded="true" 
                                     aria-controls="collapseOne">
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1 text-left"><strong>{{extractHeading(item.message)}}</strong></h5>                                        
-                                        <div class="ml-5"><span class="badge badge-pill badge-secondary">Read</span></div>
+                                        <h5 class="mb-1 text-left"><strong>{{extractHeading(item.message)}}</strong></h5>                                                                                                   
+                                        <div class="mr-5 ml-5"><span class="badge badge-pill badge-info">Read</span></div>
                                     </div>
                                     <p class="mb-1 text-left text-muted">{{extractContent(item.message)}}.</p>
                                     <div class="text-left">
-                                        <small>yesterday 12:30</small>
+                                        <small>{{humanizeDate(item.time_stamp)}}</small>
                                         <p><small> by -- {{item.sender.member.username}}</small></p>
                                     </div>                                                                   
                                   
@@ -85,8 +85,12 @@
             }
         },
         methods:{
-            fetchData: function(){
-                var channel = this.$route.params.id
+            humanizeDate:function(date_time){
+                return this.$timeAgo.format(new Date(date_time), 'twitter')
+            },
+            fetchData: function(){                
+                var channel = this.$route.params.id            
+
                 this.$http.get(this.$BASE_URL + '/api/social/' + channel + '/notices/')
                 .then(response => {
                     this.notices = response.data        
@@ -112,7 +116,7 @@
     
                 this.noticeSocket.onmessage = function(event) {                                                            
                     var data = JSON.parse(event.data)                
-                    vm.notices.push(0,data[0])
+                    vm.notices.splice(0,0,data[0])
                  }
                  this.noticeSocket.onclose = function(event) {
                     console.error('Chat socket closed unexpectedly'+ event);
