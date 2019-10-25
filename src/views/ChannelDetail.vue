@@ -19,6 +19,13 @@
             </div>
         </nav>
         <!-- Channel details -->
+        <div style="background-color: ghostwhite">      
+                <h3  class="container text-primary">
+                <strong >
+                    {{channel_name}}
+                </strong>            
+                </h3>            
+        </div> 
         <div class="container mb-2 mt-2">
             <div class="container btn-group tab" role="group" aria-label="Basic example">
                 <button type="button" 
@@ -35,13 +42,6 @@
                 </button>
             </div>
         </div>  
-        <div style="background-color: ghostwhite">      
-            <h3  class="container text-primary">
-            <strong >
-                {{channel_name}}
-            </strong>            
-            </h3>            
-        </div> 
         <div id="public" class="tab-content">
             <ChannelPublics />
         </div>

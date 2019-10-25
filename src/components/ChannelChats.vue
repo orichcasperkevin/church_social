@@ -67,7 +67,17 @@ export default {
             messages: [],
             chatSocket: null,
             message: '',
-            username: this.$session.get('username')
+            username: this.$session.get('username'),
+            channel: this.$route.params.id
+        }
+    },
+    watch:{
+        messages:function(){            
+            //update local storage with the last message in id
+            var channel = this.$route.params.id
+            var last_message_seen_id = this.messages[this.messages.length-1].id                
+            localStorage.setItem(channel + "_last_message_seen",last_message_seen_id.toString())                          
+
         }
     },
     methods:{
@@ -76,9 +86,10 @@ export default {
         },
         fetchData: function(){
             var channel = this.$route.params.id
+
             this.$http.get(this.$BASE_URL + '/api/social/' + channel + '/messages/')
             .then(response => {
-                this.messages = response.data        
+                this.messages = response.data                       
                 this.watchForMoreMessages()                
             })
             .catch(() => {
@@ -108,6 +119,9 @@ export default {
              }
 
         },
+    },
+    beforeDestroy(){
+        this.chatSocket.close()    
     }
 }
 </script>

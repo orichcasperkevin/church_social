@@ -11,13 +11,16 @@ import VueSession from 'vue-session'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 import VueLetterAvatar from 'vue-letter-avatar';
- 
+import VueWorker from 'vue-worker'
+
+
+Vue.use(VueWorker,'$worker') 
 Vue.use(VueLetterAvatar);
 Vue.use(VueSession)
 Vue.use(VueChatScroll)
 
 TimeAgo.addLocale(en)
-Vue.prototype.$randStr = () => {Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);}
+
 Vue.prototype.$timeAgo = new TimeAgo('en-US')
 Vue.prototype.$http = axios
 Vue.prototype.$BASE_URL = "http://127.0.0.1:8000"
