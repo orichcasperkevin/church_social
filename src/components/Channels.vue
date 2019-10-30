@@ -16,7 +16,7 @@
                 </div>
               </div>
               <p class="mb-1 ml-4" :id="item.channel.name + '_preview'">loading...</p>
-              <small class="text-primary">3 days ago</small>
+              <p class="text-right"><small class="text-primary">3 days ago</small></p>
           </a>
       </div>      
       </router-link>         
@@ -35,6 +35,7 @@ export default {
   },
   data(){
     return{
+      username: this.$session.get('username'),
       channels: []      
     }
   },
@@ -45,9 +46,8 @@ export default {
       }
       return str.slice(0, num) + '...'
     },
-    fetchData: function(){
-      var username = "casper"
-      this.$http.get(this.$BASE_URL + '/api/social/' + username + '/channels/')
+    fetchData: function(){      
+      this.$http.get(this.$BASE_URL + '/api/social/' + this.username + '/channels/')
       .then(response => {
         this.channels = response.data
         this.prefetchDetail()
@@ -89,20 +89,23 @@ export default {
       var BASE_URL = "127.0.0.1:8000"                 
       this.chatSocket = new WebSocket('ws://' + BASE_URL +'/ws/chat/' + channel + '/');
 
-      this.chatSocket.onmessage = function(event) {                                                            
+      this.chatSocket.onmessage = function(event) {       
+          // get message from socket and add to messages in local storage
           var data = JSON.parse(event.data)     
           var messages = JSON.parse(localStorage.getItem(storage_name))
           messages.push(data[0])
           localStorage.setItem(storage_name,JSON.stringify(messages))
 
-          var last_message_received_id = messages[messages.length-1].id                  
-          //set last message received
-          var last_message_received = messages[messages.length-1].message                
-          document.getElementById(channel + "_preview").lastChild.data = vm.truncate(last_message_received,15)
+          //set message as last received
+          var last_message_received_id = messages[messages.length-1].id                            
+          var last_message_received = messages[messages.length-1].message                                    
+          document.getElementById(channel + "_preview").lastChild.data = vm.truncate(last_message_received,15)         
+
           //count unread
           var last_message_seen_id  = localStorage.getItem(channel + "_last_message_seen")                  
           var unread_message_count = last_message_received_id - parseInt(last_message_seen_id)
 
+          // check for any unreads and mark them as unread
           vm.markAsUnread(channel,unread_message_count)         
         }
         this.chatSocket.onclose = function(event) {
