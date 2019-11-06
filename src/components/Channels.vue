@@ -63,12 +63,13 @@ export default {
                 
         this.$http.get(this.$BASE_URL + '/api/social/' + channel + '/messages/')
             .then(response => {
+                var vm = this
                 var messages = response.data
                 localStorage.setItem(storage_name,JSON.stringify(messages))
                 var last_message_received_id = messages[messages.length-1].id  
                 //set last message received
                 var last_message_received = messages[messages.length-1].message                
-                document.getElementById(channel + "_preview").lastChild.data = this.truncate(last_message_received, 15)
+                document.getElementById(channel + "_preview").lastChild.data = vm.truncate(last_message_received, 35)
                 ////count unread
                 var last_message_seen_id  = localStorage.getItem(channel + "_last_message_seen")                  
                 var unread_message_count = last_message_received_id - parseInt(last_message_seen_id)                                                                        
@@ -99,7 +100,7 @@ export default {
           //set message as last received
           var last_message_received_id = messages[messages.length-1].id                            
           var last_message_received = messages[messages.length-1].message                                    
-          document.getElementById(channel + "_preview").lastChild.data = vm.truncate(last_message_received,15)         
+          document.getElementById(channel + "_preview").lastChild.data = vm.truncate(last_message_received,35)         
 
           //count unread
           var last_message_seen_id  = localStorage.getItem(channel + "_last_message_seen")                  

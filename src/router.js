@@ -52,6 +52,11 @@ export default new Router({
       path: '/channel-detail/:id',
       name: 'channel-detail',
       component: () => import('./views/ChannelDetail.vue')
+    },
+    {
+      path: '/peer-to-peer-chat/:id',
+      name: 'peer-to-peer-chat',
+      component: () => import('./views/PeerToPeerChats.vue')
     }
   ]
 })

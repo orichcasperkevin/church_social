@@ -1,7 +1,7 @@
 <template>
   <div class="peer-to-peer-chats">
       <div class="chat-list-item " v-for="item in recent_chats" >
-          <router-link :to=" `/channel-detail/`" class=""> 
+          <router-link :to=" `/peer-to-peer-chat/` + [item.sender.member.username,item.receiver.member.username].sort().toString().split(',').join('_')" class=""> 
           <div class="row">          
               <a href="#" class=" list-group-item list-group-item-action flex-column align-items-start border-0">        
                   <div class="d-flex w-100 justify-content-between">                         
@@ -54,7 +54,7 @@ export default {
     fetchData: function(){
       this.$http.get(this.$BASE_URL + '/api/social/' + this.username + '/chats/')
       .then(response => {
-        this.recent_chats = response.data        
+        this.recent_chats = response.data             
         this.prefetchDetails()
       })
       .catch(() => {
@@ -62,8 +62,7 @@ export default {
       })
     },
     prefetchDetails: function(){
-      for (var item in this.recent_chats){        
-        var vm = this
+      for (var item in this.recent_chats){               
         var chat = this.recent_chats[item]
         var this_user, other_user ;
         this.username == chat.sender.member.username ? this_user = chat.sender.member.username : this_user = chat.receiver.member.username

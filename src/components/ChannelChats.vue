@@ -27,7 +27,7 @@
                     <div class="message message-personal text-left" v-if="item.sender.member.username == username" >                                           
                             <p>
                             {{item.message}}                           
-                            <div class="timestamp text-right" > {{humanizeDate(item.time_stamp)}}</div>  
+                            <div class="timestamp text-right" > {{$humanizeDate(item.time_stamp)}}</div>  
                             </p>                                                                                  
                     </div>
                     <div class="message new" v-else>
@@ -36,14 +36,14 @@
                         <small class="text-success" >{{item.sender.member.username}} </small>                
                         <p>
                             {{item.message}}
-                            <div class="timestamp text-right" > {{humanizeDate(item.time_stamp)}}</div>  
+                            <div class="timestamp text-right" > {{$humanizeDate(item.time_stamp)}}</div>  
                         </p> 
                     </div>
                     </div>
             </div>    
         </div>
         <div class="message-box">
-            <textarea type="text" class="message-input" placeholder="Type message..." v-model="message"></textarea>
+            <textarea type="text" class="message-input" rows="14" cols="10" wrap="soft"placeholder="Type message..." v-model="message"></textarea>
             <button type="submit" class="message-submit" v-on:click="sendMessage()">Send</button>
         </div>
 
@@ -81,9 +81,6 @@ export default {
         }
     },
     methods:{
-        humanizeDate:function(date_time){
-            return this.$timeAgo.format(new Date(date_time), 'twitter')
-        },
         fetchData: function(){
             var channel = this.$route.params.id
 
@@ -96,10 +93,9 @@ export default {
                 
             })
         },
-        sendMessage: function(){
-            // use username of registered user
+        sendMessage: function(){          
             this.chatSocket.send(JSON.stringify({
-                'username': this.$session.get('username'),
+                'username': this.username,
                 'message': this.message,                
             }));
         },
