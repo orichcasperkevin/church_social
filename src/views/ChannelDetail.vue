@@ -62,6 +62,9 @@
         mounted(){
             this.openTab('chats')
         },
+        destroyed(){
+            this.$store.dispatch('update_showNav', true)
+        },
         computed:{
            // replace underscores with spaces and concatenate a #
            channel_name: function() {            

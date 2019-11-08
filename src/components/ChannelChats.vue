@@ -61,6 +61,7 @@ export default {
     },
     created(){
         this.fetchData()
+        this.$store.dispatch('update_showNav', false) 
     },
     data(){
         return{
@@ -116,7 +117,7 @@ export default {
 
         },
     },
-    beforeDestroy(){
+    beforeDestroy(){        
         this.chatSocket.close()    
     }
 }

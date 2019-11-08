@@ -80,6 +80,10 @@ export default {
     },
     created(){
         this.fetchData()
+        this.$store.dispatch('update_showNav', false)         
+    },
+    destroyed(){
+        this.$store.dispatch('update_showNav', true)
     },
     watch:{
         messages:function(){            

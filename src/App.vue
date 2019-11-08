@@ -1,10 +1,17 @@
 <template>
-  <div id="app">   
-      <nav hidden class="fixed-bottom navbar navbar-light bg-light">        
-          <div class="navbar-nav navbar-expand">  
-              <router-link :to="{name: 'me'}" style="padding: 12px" class="nav-item nav-link text-primary">me</router-link>          
-              <router-link :to="{name: 'home'}" style="padding: 12px" class="nav-item nav-link text-primary">channels</router-link> 
-              <router-link :to="{name: 'discussions'}" style="padding: 12px" class="nav-item nav-link text-primary">chats</router-link>                  
+  <div id="app">          
+      <div class="d-none">{{showNav}} </div>
+      <nav id="bottom-nav" class="fixed-bottom navbar navbar-light bg-light">        
+          <div class="navbar-nav navbar-expand">              
+              <router-link :to="{name: 'me'}" style="padding: 12px" class="nav-item nav-link text-primary">
+                  <img src="@/assets/icons/icons8-user-30.png" style="width: 30px; height: auto">                  
+              </router-link>          
+              <router-link :to="{name: 'home'}" style="padding: 12px" class="nav-item nav-link text-primary">
+                  <img src="@/assets/icons/speech-bubbles-comment-option.svg" style="width: 30px; height: auto">  
+              </router-link> 
+              <router-link :to="{name: 'discussions'}" style="padding: 12px" class="nav-item nav-link text-primary">
+                  <img src="@/assets/icons/icons8-strategy-news-50.png" style="width: 30px; height: auto"> 
+              </router-link>                  
           </div>  
           <button class="navbar-toggler" type="button btn-primary" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -24,8 +31,21 @@
 <script>
   export default {
   name: 'app',
-  data () {
-    return { }
+  computed :{
+    showNav: function() {
+      var bottomNav
+      if (! this.$store.getters.showNav){
+        if (bottomNav = document.getElementById("bottom-nav")){
+          bottomNav.classList.add("d-none")
+        }        
+      }
+      else{
+        if (bottomNav = document.getElementById("bottom-nav")){
+          bottomNav.classList.remove("d-none")
+        }       
+      }
+      return this.$store.getters.showNav
+     }
   },
   beforeCreate: function () {
     if (!this.$session.exists()) {
