@@ -16,7 +16,9 @@
                 </div>
               </div>
               <p class="mb-1 ml-4" :id="item.channel.name + '_preview'">loading...</p>
-              <p class="text-right"><small class="text-primary">3 days ago</small></p>
+              <p class="text-right">
+                <small class="text-primary" :id="item.channel.name + '_time_preview'">...</small>
+              </p>
           </a>
       </div>      
       </router-link>         
@@ -64,13 +66,19 @@ export default {
         this.$http.get(this.$BASE_URL + '/api/social/' + channel + '/messages/')
             .then(response => {
                 var vm = this
+                //update localstorage
                 var messages = response.data
-                localStorage.setItem(storage_name,JSON.stringify(messages))
-                var last_message_received_id = messages[messages.length-1].id  
+                localStorage.setItem(storage_name,JSON.stringify(messages))               
+
                 //set last message received
-                var last_message_received = messages[messages.length-1].message                
+                var last_message_received_id = messages[messages.length-1].id  
+                var last_message_received = messages[messages.length-1].message     
+                var last_message_received_time = messages[messages.length-1].time_stamp 
+
                 document.getElementById(channel + "_preview").lastChild.data = vm.truncate(last_message_received, 35)
-                ////count unread
+                document.getElementById(channel + "_time_preview").lastChild.data = this.$humanizeDate(last_message_received_time)
+
+                //count unread
                 var last_message_seen_id  = localStorage.getItem(channel + "_last_message_seen")                  
                 var unread_message_count = last_message_received_id - parseInt(last_message_seen_id)                                                                        
                 if (unread_message_count > 0){                

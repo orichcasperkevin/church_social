@@ -81,6 +81,14 @@ export default {
     created(){
         this.fetchData()
     },
+    watch:{
+        messages:function(){            
+            //update local storage with the last message in id            
+            var channel = this.$route.params.id
+            var last_message_seen_id = this.messages[this.messages.length-1].id                
+            localStorage.setItem(channel + "_last_message_seen",last_message_seen_id.toString())                          
+        }
+    },
     methods:{
         // initial fetch data
         fetchData: function(){
@@ -107,7 +115,7 @@ export default {
             return {'this_user':this_user,'other_user':other_user}
         },
         // send message to a peer
-        sendMessage: function(){            
+        sendMessage: function(){
             var peers = this.getPeers()
             this.chatSocket.send(JSON.stringify({
                 'sender': this.username,
@@ -115,8 +123,8 @@ export default {
                 'message': this.message,                
             }));
         },
-        watchForMoreMessages: function (){
-            //TODO have a function that converts $BASE_URL to this form
+        // watch for more messages as they come in
+        watchForMoreMessages: function (){        
             var vm = this
             var BASE_URL = "127.0.0.1:8000"   
             var channel = this.$route.params.id         
