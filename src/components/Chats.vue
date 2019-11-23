@@ -22,7 +22,7 @@
                       </span>
                     </div>
                   </div>
-                  <p class="mb-1 ml-4" :id="[item.sender.member.username,item.receiver.member.username].sort().toString().split(',').join('_') + '_preview'">loading...</p>
+                  <p class="mb-1 ml-4" :id="[item.sender.member.username,item.receiver.member.username].sort().toString().split(',').join('_') + '_preview'">...</p>
                   <p class="text-right">
                     <small :id="[item.sender.member.username,item.receiver.member.username].sort().toString().split(',').join('_') + '_time_preview'" class="text-primary">
                       ...
@@ -32,6 +32,7 @@
           </div>      
           </router-link>         
         </div>
+        <br/><br/><br/>
   </div>        
 </template>
 
@@ -74,38 +75,45 @@ export default {
         //get logged in user and the connected peer
         var this_user, other_user ;
         this.username == chat.sender.member.username ? this_user = chat.sender.member.username : this_user = chat.receiver.member.username
-        this.username != chat.sender.member.username ? other_user = chat.sender.member.username : other_user = chat.receiver.member.username
-        var chat_name = [this_user,other_user].sort().toString().split(',').join('_')
-        var storage_name = chat_name + "_messages"
-        
-        //network fetch
-        this.$http.get(this.$BASE_URL + '/api/social/' + this_user + '/' + other_user + '/chat-messages/')
-            .then(response => {              
-              //update local storage
-              var messages = response.data
-              localStorage.setItem(storage_name,JSON.stringify(messages))  
+        this.username != chat.sender.member.username ? other_user = chat.sender.member.username : other_user = chat.receiver.member.username                   
 
-              //setup previews
-              var last_message_received = messages[messages.length-1].message          
-              var last_message_received_time = messages[messages.length-1].time_stamp 
-              document.getElementById(chat_name + "_preview").lastChild.data = last_message_received
-              document.getElementById(chat_name + "_time_preview").lastChild.data = this.$humanizeDate(last_message_received_time)             
-
-              //count unread
-              var last_message_received_id = messages[messages.length-1].id  
-              var last_message_seen_id  = localStorage.getItem(chat_name + "_last_message_seen")                  
-              var unread_message_count = last_message_received_id - parseInt(last_message_seen_id)
-
-              // if there are unread messages, mark
-              if (unread_message_count > 0){                
-                  this.markAsUnread(chat_name,unread_message_count)                  
-              }  
-            })
-            .catch(() => {
-                
-            }) 
-        this.watchForMoreMessages(chat_name)
+        // get messages
+        this.getMessages(this_user,other_user)
       }
+    },
+    getMessages: function(this_user,other_user){
+
+          var chat_name = [this_user,other_user].sort().toString().split(',').join('_')
+          var storage_name = chat_name + "_messages" 
+
+          //network fetch
+          this.$http.get(this.$BASE_URL + '/api/social/' + this_user + '/' + other_user + '/chat-messages/')
+          .then(response => {              
+            //update local storage
+            var messages = response.data
+            localStorage.setItem(storage_name,JSON.stringify(messages))  
+
+            //setup previews
+            var last_message_received = messages[messages.length-1].message          
+            var last_message_received_time = messages[messages.length-1].time_stamp 
+            document.getElementById(chat_name + "_preview").lastChild.data = last_message_received
+            document.getElementById(chat_name + "_time_preview").lastChild.data = this.$humanizeDate(last_message_received_time)             
+
+            //count unread
+            var last_message_received_id = messages[messages.length-1].id  
+            var last_message_seen_id  = localStorage.getItem(chat_name + "_last_message_seen")                  
+            var unread_message_count = last_message_received_id - parseInt(last_message_seen_id)
+
+            // if there are unread messages, mark
+            if (unread_message_count > 0){                
+                this.markAsUnread(chat_name,unread_message_count)                  
+            }  
+            //watch for more messages from this chat
+            this.watchForMoreMessages(chat_name)
+          })
+          .catch(() => {
+              
+          }) 
     },
     watchForMoreMessages: function(chat_name){      
       var vm = this

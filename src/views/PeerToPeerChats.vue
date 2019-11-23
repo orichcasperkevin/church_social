@@ -2,13 +2,10 @@
     <div class="peer-to-peer-chats">
         <!-- peer to peer chats -->
         <nav class="navbar navbar-expand  navbar-light bg-light">
-                <h5>
+                
                 <router-link to="/"  class="navbar-brand back-button text-primary">
-                    <img src="@/assets/icons/left-arrow.svg">
-                    <vue-letter-avatar :name="getPeers().other_user" size='25' :rounded=true class="ml-3"/> 
-                    {{getPeers().other_user}}
-                </router-link>  
-                </h5>                      
+                    <img src="@/assets/icons/left-arrow.svg">                 
+                </router-link>                                               
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav ml-auto">
                     <a class="nav-item nav-link" href="#"></a>
@@ -17,8 +14,14 @@
         
                     </div>
                 </div>
-        </nav>        
-        <div class="container mt-2.5 mb-1.5 text-right"> 
+        </nav> 
+        <div  style="background-color: ghostwhite">      
+            <h3 class="container strong" >
+                <vue-letter-avatar :name="getPeers().other_user" size='30' :rounded=true class="ml-3"/> 
+                {{getPeers().other_user}}
+            </h3>
+          </div>        
+        <div class="container mt-2.5 mb-1.5 text-right shadow-sm "> 
             <div class="row">
                 <div class="col-6 text-left mt-3 text-success">online...</div>  
                 <div class="col-6">
