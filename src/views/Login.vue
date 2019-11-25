@@ -77,7 +77,7 @@ export default {
         this.$session.set('token', response.data.access)
         this.$session.set('username', this.username)
         //get logged in member data
-        this.getLoggedInMemberData()
+        this.getLoggedInMemberData()        
         router.push('/');
       })
         .catch((err) => {
@@ -87,7 +87,7 @@ export default {
 
         })
     },
-    getLoggedInMemberData: function(){
+    getLoggedInMemberData: function(){      
       this.$http.get(this.$BASE_URL + '/api/members/member/' + this.$session.get('username') + '/')
           .then(response => {              
             this.$session.set('member_id', response.data[0].member.id)                
